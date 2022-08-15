@@ -9,6 +9,7 @@ body {
 
 #screen {
     width: 30%;
+    margin-top: 3%;
     margin-right: 2%;
     height: 100px;
     float: left;
@@ -43,18 +44,18 @@ body {
   }
 
 #keypad {
-    width: 80%;
-    margin-right: 2%;
+    width: 70%;
+    margin-left: 15%;
     margin-top: 1em;
     float: left;
     #buttons {
       width: 100%;
       text-align: center;
       button {
-        width: 100px;
-        height: 100px;
+        width: 15%;
+        height: 20%;
         text-align: center;
-        margin: 2px 2px;
+        margin: 2% 1%;
       }      
     }
   }
