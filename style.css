@@ -1,9 +1,13 @@
-#bom {
-  width: 50%;
-  min-width: 600px;
-  margin: 2em auto;
-  
-  #screen {
+body {
+    font-family: sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 100vh;
+}
+
+#screen {
     width: 48%;
     margin-right: 2%;
     height: 100px;
@@ -31,12 +35,14 @@
       z-index: 999;
     }
   }
-  #notes {
+
+#notes {
     width: 50%;
     height: 200px;
     float: right;
   }
-  #keypad {
+
+#keypad {
     width: 48%;
     margin-right: 2%;
     margin-top: 1em;
@@ -52,4 +58,3 @@
       }      
     }
   }
-}
