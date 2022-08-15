@@ -45,15 +45,15 @@ body {
 
 #keypad {
     width: 100%;
-    margin-left: 15%;
+    margin-left: 10%;
     margin-top: 1em;
     float: left;
     #buttons {
       width: 100%;
       text-align: center;
       button {
-        width: 25%;
-        height: 30%;
+        width: 35%;
+        height: 40%;
         text-align: center;
         margin: 2% 1%;
       }      
