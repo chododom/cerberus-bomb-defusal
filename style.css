@@ -47,11 +47,13 @@ body {
 
 #keypad {
     width: 100%;
+    height: 40%;
     margin-left: 10%;
     margin-top: 1em;
     float: left;
     #buttons {
       width: 100%;
+        height: 100%;
       text-align: center;
       button {
         width: 45%;
