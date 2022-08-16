@@ -45,7 +45,14 @@ body {
     float: right;
   }
 
-#keypad {
+#button {
+        width: 5%;
+        height: 5%;
+        text-align: center;
+        margin: 1% 1%;
+      }     
+
+/*#keypad {
     width: 100%;
     height: 40%;
     margin-left: 10%;
@@ -62,4 +69,4 @@ body {
         margin: 2% 1%;
       }      
     }
-  }
+  }*/
