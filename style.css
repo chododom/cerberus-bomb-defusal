@@ -45,7 +45,7 @@ body {
     float: right;
   }
 
-#button {
+.button {
         width: 7%;
         height: 7%;
         text-align: center;
