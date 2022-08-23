@@ -1,23 +1,20 @@
 (function() {
   
   var bomDefuser = {
-    passCode: '',
-    armed: 0, // 0 = unarmed, 1 = arming pass, 2 = arming time, 3 = pre-arm, 5 = armed
+    passCode: '69420A',
+    armed: 3, // 0 = unarmed, 1 = arming pass, 2 = arming time, 3 = pre-arm, 5 = armed
     keyPress: [],
-    time: '', // time
+    time: '10', // time
     timer: 0, // time in seconds
     countdown: null, // countdown time in seconds
-    flashLight: null,
-    lightFlash: false,
-    lightColor: 'white',
     
     init: function() {
       // set Events
       this.getKeyPress();
       
-      if(this.armed == 0) {
-        this.setScreen(1, "UNARMED");
-        this.setScreen(2, "NOPE");
+      if(this.armed == 3) {
+        this.setScreen(1, "BOMB");
+        this.setScreen(2, "ARMED");
       }
     },
     
@@ -55,49 +52,6 @@
       testString = this.keyPress.join('');
       
       switch(true) {
-        // pre-arm bom
-        case (
-          this.armed === 0
-          && testString.lastIndexOf('A***') >= 0
-          && testString.lastIndexOf('A***') == (this.keyPress.length - 4)
-        ):
-          this.setScreen(1, 'SET CODE');
-          this.setScreen(2, '');
-          this.passcode = '';
-          this.armed = 1;
-          bomDefuser.doLight('white', true);
-          break;
-        // give passcode
-        case (
-          this.armed === 1
-          && '*#'.lastIndexOf(key) < 0 // don't include * or #
-          && testString.lastIndexOf('#') != (this.keyPress.length - 1)
-        ):
-          this.passCode += ''+key;
-          this.setScreen(2, key, true);
-          break;
-        // set passcode
-        case (
-          this.armed === 1
-          && testString.lastIndexOf('#') > 0
-          && this.passCode.length >= 4
-          && this.passCode.length <= 8
-          && testString.lastIndexOf('#') == (this.keyPress.length - 1)
-        ):
-          this.setScreen(1, 'SET TIME')
-          this.setScreen(2, '');
-          this.armed = 2;
-          break;
-        // give time
-        case (
-          this.armed === 2
-          && '1234567890'.lastIndexOf(key) > 0 // only include numbers
-          && testString.lastIndexOf('#') != (this.keyPress.length - 1)
-        ):
-          this.time += ''+key;
-          this.setScreen(2, key, true);
-          break;
-        // set time
         case (
           this.armed === 2
           && testString.lastIndexOf('#') > 0
@@ -114,13 +68,12 @@
           this.armed === 3
           && testString.lastIndexOf('A#') == (this.keyPress.length - 2)
         ):
-          this.setScreen(1, 'ARMED');
+          this.setScreen(1, 'BOMB ARMED');
           this.setScreen(2, '');
           this.armed = 5;
           this.setCountdown();
           this.playSound('clock', true);
           this.doCountdown();
-          bomDefuser.doLight('red', true);
           break;
           
         // false passcode
@@ -142,32 +95,12 @@
           clearInterval(bomDefuser.countdown);
           bomDefuser.countdown = false;
          
-          this.setScreen(1, 'DISARMED');
-          this.setScreen(2, '');
+          this.setScreen(1, 'BOMB');
+          this.setScreen(2, 'DISARMED');
           this.stopSound('clock');
           this.playSound('beep');
           
-          clearInterval(bomDefuser.flashLight);
-          this.doLight('g');
-          
           this.armed = 0;
-          break;
-        // reset
-        case (
-          this.armed !== 5
-          && testString.lastIndexOf('ABCD#') >= 0
-          && testString.lastIndexOf('ABCD#') == (this.keyPress.length - 5)
-        ):
-          this.armed = 0;
-          this.passCode = '';
-          this.keyPress = [];
-          this.lightFlash = false;
-          
-          this.setScreen(1, 'UNARMED');
-          this.setScreen(2, '');
-          
-          clearInterval(bomDefuser.flashLight);
-          this.doLight('white');
           break;
       }
     },
@@ -211,28 +144,7 @@
         }
       }
     },
-    
-    doLight: function(color, flash) {
-      light = document.getElementById('light');
-      
-      if(flash || bomDefuser.lightFlash) {
-        bomDefuser.lightColor = color || bomDefuser.lightColor;
-        bomDefuser.lightFlash = flash || bomDefuser.lightFlash;
-        
-        if(null == bomDefuser.flashLight) {
-          bomDefuser.flashLight = setInterval(bomDefuser.doLight, 500);
-        }
-        if(light.style.background == bomDefuser.lightColor) {
-          light.style.background = 'black';
-        } else {
-          light.style.background = bomDefuser.lightColor;
-        }
-      } else {
-        clearInterval(bomDefuser.flashLight);
-        light.style.background = color;
-      }
-    },
-    
+       
     playSound: function(id, loop) {
       myAudio = document.getElementById(id);
       if(true == loop) {
