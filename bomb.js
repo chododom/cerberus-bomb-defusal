@@ -4,7 +4,7 @@
     passCode: '69420A',
     armed: 3, // 0 = unarmed, 1 = arming pass, 2 = arming time, 3 = pre-arm, 5 = armed
     keyPress: [],
-    time: '180', // time
+    time: '300', // time
     timer: 0, // time in seconds
     countdown: null, // countdown time in seconds
     
