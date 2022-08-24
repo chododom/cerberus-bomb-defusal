@@ -2,7 +2,7 @@
   
   var bomDefuser = {
     passCode: '69420A',
-    armed: 3, // 0 = unarmed, 1 = arming pass, 2 = arming time, 3 = pre-arm, 5 = armed
+    armed: 0, // 0 - idle, 1 - armed, 2 - defused/exploded
     keyPress: [],
     time: '300', // time
     timer: 0, // time in seconds
@@ -12,7 +12,7 @@
       // set Events
       this.getKeyPress();
       
-      if(this.armed == 3) {
+      if(this.armed == 0) {
         this.setScreen(1, "BOMB");
         this.setScreen(2, "ARMED");
       }
@@ -52,25 +52,14 @@
       testString = this.keyPress.join('');
       
       switch(true) {
-        case (
-          this.armed === 2
-          && testString.lastIndexOf('#') > 0
-          && this.time.length >= 1
-          && this.time.length <= 6
-          && testString.lastIndexOf('#') == (this.keyPress.length - 1)
-        ):
-          this.setScreen(1, 'READY');
-          this.setScreen(2, '');
-          this.armed = 3;
-          break;
         // arming
          case (
-          this.armed === 3
-          && testString.lastIndexOf('A#') == (this.keyPress.length - 2)
+          this.armed === 0
+          && testString.lastIndexOf('#') == (this.keyPress.length - 1)
         ):
           this.setScreen(1, 'BOMB ARMED');
           this.setScreen(2, '');
-          this.armed = 5;
+          this.armed = 1;
           this.setCountdown();
           this.playSound('clock', true);
           this.doCountdown();
@@ -78,7 +67,7 @@
           
         // false passcode
         case (
-          this.armed === 5
+          this.armed === 1
           && testString.lastIndexOf('#') == (this.keyPress.length - 1)
           && testString.lastIndexOf(this.passCode+"#") != (this.keyPress.length - this.passCode.length - 1)
         ):
@@ -88,7 +77,7 @@
           break;
         // disarm bom
         case (
-          this.armed === 5
+          this.armed === 1
           && testString.lastIndexOf(this.passCode+"#") > 0
           && testString.lastIndexOf(this.passCode+"#") == (this.keyPress.length - this.passCode.length - 1)
         ):
@@ -100,7 +89,7 @@
           this.stopSound('clock');
           this.playSound('beep');
           
-          this.armed = 0;
+          this.armed = 2;
           break;
       }
     },
@@ -124,7 +113,7 @@
     },
     
     doCountdown: function() {
-      if(bomDefuser.armed == 5) {
+      if(bomDefuser.armed == 1) {
         if(null == bomDefuser.countdown) {
           bomDefuser.countdown = setInterval(bomDefuser.doCountdown, 1000);
         }
@@ -135,7 +124,7 @@
           bomDefuser.setScreen(2, "");
           bomDefuser.stopSound('clock');
           bomDefuser.playSound('explosion');
-          bomDefuser.armed = 0;
+          bomDefuser.armed = 2;
           return;
         } else {
           count = bomDefuser.updateTime(bomDefuser.timer);
